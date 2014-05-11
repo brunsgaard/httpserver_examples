@@ -14,5 +14,5 @@ class Request(object):
         self.headers = HeaderDict()
 
     def __repr__(self):
-        args = self.command, self.path, self.version, self.headers
-        return '<Request({},{},{})>\n -- {}'.format(*args)
+        args = self.command, self.path, self.version
+        return '<Request({},{},{})>'.format(*args)

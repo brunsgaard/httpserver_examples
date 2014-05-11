@@ -24,7 +24,7 @@ class HTTPProtocol(LineReceiver):
                 self.headerReceived(self._cheader)
             self.emptyLineReceived()
         elif line[0] in ' \t':
-            self._header += '\n' + line
+            self._cheader += '\n' + line
         elif ':' in line:
             if self._cheader:
                 self.headerReceived(self._cheader)
@@ -33,13 +33,16 @@ class HTTPProtocol(LineReceiver):
     def headerReceived(self, rawheader):
         try:
             key, value = rawheader.split(":", 1)
+            key = (key.strip()).lower()
+            value = ' '.join((s.strip() for s in value.splitlines()))
             self.request.headers[key] = value
         except:
             self.badRequest()
 
     def emptyLineReceived(self):
-        print('emptyLineReceived')
         print(self.request)
+        from pprint import pprint
+        pprint(self.request.headers.items())
         self.transport.loseConnection()
 
     def badRequest(self):
