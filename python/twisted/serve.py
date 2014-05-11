@@ -3,6 +3,9 @@ from twisted.protocols.basic import LineReceiver
 #from twisted.python import log
 from models import Request
 
+# No persistent connections
+# No pipeline
+# Only serve text data for now
 
 class HTTPProtocol(LineReceiver):
 
@@ -32,6 +35,8 @@ class HTTPProtocol(LineReceiver):
 
     def headerReceived(self, rawheader):
         try:
+            # move this to HeaderClass, also keep raw data,
+            # just for good measures
             key, value = rawheader.split(":", 1)
             key = (key.strip()).lower()
             value = ' '.join((s.strip() for s in value.splitlines()))
@@ -61,6 +66,7 @@ if __name__ == "__main__":
     reactor.listenTCP(8080, HTTPFactory())
     reactor.run()
 
+# EXAMPLE that works with persistent connections
 #        if line == b'':
 #            self.transport.write('HTTP/1.1 200 OK\n')
 #            self.transport.write('Content-Length: 42\n')
