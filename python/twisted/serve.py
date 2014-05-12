@@ -42,12 +42,14 @@ class HTTPProtocol(LineReceiver):
             self.badRequest()
 
     def emptyLineReceived(self):
+        # todo
         print(self.request)
         from pprint import pprint, pformat
         pprint(self.request.headers.items())
 
-        ret = "Hello World... You sent me the headers\n\n"
-        ret += pformat(self.request.headers.items())
+        ret = "Hello World!\n\nYou sent me the following request and headers:\n"
+        ret += repr(self.request) + '\n'
+        ret += pformat(self.request.headers.items()) + '\n'
 
         self.transport.write('HTTP/1.1 200 OK\n')
         self.transport.write('Content-Length: {}\n'.format(len(ret)+1))
