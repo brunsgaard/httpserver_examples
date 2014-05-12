@@ -27,6 +27,10 @@ X-Special-action:  This is a sample of user-defined field-
  "Special-action", but its name might later be
  preempted
 Message-ID: <4231.629.XYzi-What@Other-Host>
+Message-ID: <Yolo>
+Pragma: x="foo, bar"
+Pragma: y="wassup, doc?"
+Pragma: z=yup, zz=really
 
 """
 

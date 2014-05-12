@@ -7,6 +7,7 @@ from models import Request
 # No pipeline
 # Only serve text data for now
 
+
 class HTTPProtocol(LineReceiver):
 
     request = None
@@ -35,19 +36,24 @@ class HTTPProtocol(LineReceiver):
 
     def headerReceived(self, rawheader):
         try:
-            # move this to HeaderClass, also keep raw data,
-            # just for good measures
             key, value = rawheader.split(":", 1)
-            key = (key.strip()).lower()
-            value = ' '.join((s.strip() for s in value.splitlines()))
             self.request.headers[key] = value
         except:
             self.badRequest()
 
     def emptyLineReceived(self):
         print(self.request)
-        from pprint import pprint
+        from pprint import pprint, pformat
         pprint(self.request.headers.items())
+
+        ret = "Hello World... You sent me the headers\n\n"
+        ret += pformat(self.request.headers.items())
+
+        self.transport.write('HTTP/1.1 200 OK\n')
+        self.transport.write('Content-Length: {}\n'.format(len(ret)+1))
+        self.transport.write('Content-Type: text/plain\n\r\n\r')
+        self.transport.write(ret)
+
         self.transport.loseConnection()
 
     def badRequest(self):
@@ -65,13 +71,3 @@ if __name__ == "__main__":
     # log.startLogging(sys.stdout)
     reactor.listenTCP(8080, HTTPFactory())
     reactor.run()
-
-# EXAMPLE that works with persistent connections
-#        if line == b'':
-#            self.transport.write('HTTP/1.1 200 OK\n')
-#            self.transport.write('Content-Length: 42\n')
-#            self.transport.write('Content-Type: text/plain\n\r\n\r')
-#            self.transport.write('abcdefghijklmnoprstuvwxyz1234567890abcdef')
-#            #self.transport.loseConnection()
-#            print('hej')
-#        return
