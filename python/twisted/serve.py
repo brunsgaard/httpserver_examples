@@ -47,18 +47,19 @@ class HTTPProtocol(LineReceiver):
         from pprint import pprint, pformat
         pprint(self.request.headers.items())
 
-        ret = "Hello World!\n\nYou sent me the following request and headers:\n"
-        ret += repr(self.request) + '\n'
-        ret += pformat(self.request.headers.items()) + '\n'
+        #ret = "Hello World!\n\nYou sent me the following request and headers:\n"
+        #ret += repr(self.request) + '\n'
+        #ret += pformat(self.request.headers.items()) + '\n'
 
-        self.transport.write('HTTP/1.1 200 OK\n')
-        self.transport.write('Content-Length: {}\n'.format(len(ret)+1))
-        self.transport.write('Content-Type: text/plain\n\r\n\r')
-        self.transport.write(ret)
+        #self.transport.write('HTTP/1.1 200 OK\n')
+        #self.transport.write('Content-Length: {}\n'.format(len(ret)+1))
+        #self.transport.write('Content-Type: text/plain\n\r\n\r')
+        #self.transport.write(ret)
 
         self.transport.loseConnection()
 
     def badRequest(self):
+        print("SOMETHING FAILED")
         self.transport.write(b'HTTP/1.1 400 Bad Request\n\r\n\r')
         self.transport.loseConnection()
 

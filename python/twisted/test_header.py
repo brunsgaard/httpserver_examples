@@ -1,9 +1,10 @@
 from serve import HTTPProtocol
 from twisted.web import http
+from pprint import pprint
 
 
 
-headerdata = """GET / HTTP/1.1
+headerdata = b"""GET / HTTP/1.1
 Date     :  27 Aug 76 0932 PDT
 From     :  Ken Davis <KDavis@This-Host.This-net>
 Subject  :  Re: The Syntax in the RFC
@@ -32,13 +33,16 @@ Pragma: x="foo, bar"
 Pragma: y="wassup, doc?"
 Pragma: z=yup, zz=really
 
-"""
+""".replace('\n', '\r\n')
+pprint(headerdata)
 
 lines = headerdata.splitlines()
 
 class DummyTansport(object):
 
     def loseConnection(self):
+        pass
+    def write(self, doh):
         pass
 
 p = HTTPProtocol()

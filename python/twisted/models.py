@@ -2,6 +2,7 @@ from collections import MutableMapping
 
 
 class HeaderDict(MutableMapping):
+
     def __init__(self, data=None, **kwargs):
         self._store = dict()
         if data is None:
